@@ -46,6 +46,9 @@ Abstract
 \section{Introduction}\label{sec:intro}
 Big data analytics systems are deployed in cloud computing environments to process ever-increasing dataset while guaranteeing stable operations; scalability and fault-tolerance from the perspective of infrastructure. To satisfy application demands from distinct use cases, cloud computing service providers offer various types of instances that applications can run. Using those resources, most big data platforms are deployed in a scale-out manner. As managing distributed datasets and tasks running on large-scale machines are challenging, abstractions of distributed datasets and resources are crucial to let application developers focus on tasks that really matter. Many systems are proposed to provide a simple and easy interface to handle large-scale datasets, to name a few, Hadoop~\cite{hadoop}, Spark~\cite{spark}, and recently TensorFlow~\cite{tensorflow}.
 
+In analyzing massive dataset to extract valuable insights, matrix multiplication is widely used. In recommendation systems, for example, matrix factorization algorithms, such as SVD, NMF~\cite{nmf}, whose core computation kernel is matrix-matrix multiplication are commonly used. The matrix-vector multiplication is the core kernel in page-rank algorithmby using Power method to get principle eigen vectors~\cite{pagerank}.
+
+
 %The importance of matrix multiplication
 % mention the figure
 % briefly mention other approaches to cover cloud configuration recommendation
