@@ -79,7 +79,7 @@ In Spark, matrix-related linear algebric operations are supported in the MLLib l
 
 Figure~\ref{fig:matmul-with-overhead} shows an example of block-based matrix multiplication. A left matrix, $A$, is block-partitioned by $2 \times 3$, a right matrix, $B$, is partitioned by $3 \times 2$, and the result matrix, $C$, is partitioned by $2 \times 2$. In Spark, a \textit{cogroup} operation by the result matrix block index allows a worker node that is responsible for a result block to collect necessary left and right matrix blocks. During \textit{cogroup} operation, network overhead is dominant. After collecting all necessary blocks, each worker node performs a product operation followed by an element-wise addition. In the step, I/O overhead to read the fetched blocks from a \textit{local.dir} location and compute overhead dominates.
 
-\subsection{Distributed Matrix Multiplication Overhead Modeling}
+\subsection{Distributed Matrix Multiplication Overhead Modeling}\label{sec:overhead-modeling}
 Dense matrix multiplication is widely known as a CPU intensive task, but other resource overheads become non-negligible when it is executed on a large-scale distributed computing environment, such as Spark. To qualitatively understand the characteristics of a distributed matrix multiplication task, we summarize overheads when a task is executed on Apach Spark. Let us assume the number of rows of a left matrix as $N$, the number of columns of a left matrix (or the number of rows of a right matrix) as $K$, and the number of columns of a right matrix as $M$. Accordingly, the result matrix size is $N \times M$. Left, right, and result matricies are block-partitioned whose partition size is expressed in the lowercase letter ($n$, $k$, and $m$, where $N \geq n$, $M \geq m$, and $K \geq k$). 
 
 \textbf{Shuffle}: A worker node that is responsible for computing an output matrix block of size $n \times m$ has to fetch blocks from left and right matricies with the size of $n \times K$ and $K \times m$, respectively. If a worker node does not contain required blocks locally, it has to fetch them from remote machines that incurs network overhead. Assuming uniform block distribution among workers, the network overhead in the shuffle phase can be expressed as Equation~\ref{eq:shuffle-overhead}.
@@ -97,6 +97,19 @@ After loading the input matrix blocks, each worker node executes a multiplicatio
 In the element-wise addition step, the number of sum operation of each cell is proportional to $k$, and the size of each output block is $n \times m$.
 
 \section{MPC : Matrix Multiplication Performance Prediction}
+MPC aims to predict the latency to complete multiplication of dense matricies that might have different size and shape. As the matrix multiplication is a core kernel method for various machine learning algorithm for big-data analytics, we target to predict the performance on various cloud computing resources where many recent big-data systems are deployed.
+
+% add a figure to explain all the steps of MPC
+
+The opreation step of MPC is shown in Figure~\ref{fig:mpc-architecture} that is composed of train dataset generation, feature extraction, and modeling. In the modeling step, we iteratively apply bayesian optimization~\cite{bayesian-optimization} to find the optimally working hyper parameters of the chosen algorithm.
+
+\subsection{Train Data Generation}
+\subsection{Feature Extraction}
+\subsection{Modeling}
+
+% Modeling - feature, Gradient Boosting, Bayesian Optimization
+
+
 
 \section{Evaluation}{\label{eval}}
 
