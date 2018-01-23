@@ -80,10 +80,21 @@ In Spark, matrix-related linear algebric operations are supported in the MLLib l
 Figure~\ref{fig:matmul-with-overhead} shows an example of block-based matrix multiplication. A left matrix, $A$, is block-partitioned by $2 \times 3$, a right matrix, $B$, is partitioned by $3 \times 2$, and the result matrix, $C$, is partitioned by $2 \times 2$. In Spark, a \textit{cogroup} operation by the result matrix block index allows a worker node that is responsible for a result block to collect necessary left and right matrix blocks. During \textit{cogroup} operation, network overhead is dominant. After collecting all necessary blocks, each worker node performs a product operation followed by an element-wise addition. In the step, I/O overhead to read the fetched blocks from a \textit{local.dir} location and compute overhead dominates.
 
 \subsection{Distributed Matrix Multiplication Overhead Modeling}
-Dense matrix multiplication is widely known as a CPU intensive task, but other resource overheads become non-negligible when it is executed on a large-scale distributed computing environment, such as Spark. It is important to understand such overheads to accurately estimate the performance of arbitrary size and shape of matrix multiplication on a diverse cloud computing environment. To qualitatively explain the overhead, let us assume the number of rows of a left matrix as $N$, the number of columns of a left matrix (or the number of rows of a right matrix) as $K$, and the number of columns of a right matrix as $M$. Accordingly, the result matrix size is $N \times M$. Left, right, and result matricies are block-partitioned whose partition size is expressed in the lowercase letter ($n$, $k$, and $m$, where $N \geq n$, $M \geq m$, and $K \geq k$). 
+Dense matrix multiplication is widely known as a CPU intensive task, but other resource overheads become non-negligible when it is executed on a large-scale distributed computing environment, such as Spark. To qualitatively understand the characteristics of a distributed matrix multiplication task, we summarize overheads when a task is executed on Apach Spark. Let us assume the number of rows of a left matrix as $N$, the number of columns of a left matrix (or the number of rows of a right matrix) as $K$, and the number of columns of a right matrix as $M$. Accordingly, the result matrix size is $N \times M$. Left, right, and result matricies are block-partitioned whose partition size is expressed in the lowercase letter ($n$, $k$, and $m$, where $N \geq n$, $M \geq m$, and $K \geq k$). 
 
-\textbf{Shuffle}:
-\textbf{Compute}
+\textbf{Shuffle}: A worker node that is responsible for computing an output matrix block of size $n \times m$ has to fetch blocks from left and right matricies with the size of $n \times K$ and $K \times m$, respectively. If a worker node does not contain required blocks locally, it has to fetch them from remote machines that incurs network overhead. Assuming uniform block distribution among workers, the network overhead in the shuffle phase can be expressed as Equation~\ref{eq:shuffle-overhead}.
+\begin{equation}\label{eq:shuffle-overhead}
+  BlockFetchOverhead_{n \times m} \propto \sum\limits_{i=1}^{\frac{K}{k}} n \times k + k \times m
+\end{equation}
+
+\textbf{Compute}: After a shuffle step completes, a worker node performs multiplication of fetched blocks followed by element-wise addition. In order to perform multiplication, the blocks have to be read from a Spark local directory (\textit{spark.local.dir} configuration) that is generally set as an disk. Thus, the IO read overhead is same as the shuffle overhead and expressed as Equation~\ref{eq:shuffle-overhead}.
+
+After loading the input matrix blocks, each worker node executes a multiplication task whose overhead is expressed as Equation~\ref{eq:compute-overhead}.
+\begin{equation}\label{eq:compute-overhead}
+  ComputeOverhead_{n \times m} \propto \sum\limits_{i=1}^{\frac{K}{k}} n \times k \times m
+\end{equation}
+
+In the element-wise addition step, the number of sum operation of each cell is proportional to $k$, and the size of each output block is $n \times m$.
 
 \section{MPC : Matrix Multiplication Performance Prediction}
 
