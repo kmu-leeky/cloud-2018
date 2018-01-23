@@ -79,7 +79,13 @@ In Spark, matrix-related linear algebric operations are supported in the MLLib l
 
 Figure~\ref{fig:matmul-with-overhead} shows an example of block-based matrix multiplication. A left matrix, $A$, is block-partitioned by $2 \times 3$, a right matrix, $B$, is partitioned by $3 \times 2$, and the result matrix, $C$, is partitioned by $2 \times 2$. In Spark, a \textit{cogroup} operation by the result matrix block index allows a worker node that is responsible for a result block to collect necessary left and right matrix blocks. During \textit{cogroup} operation, network overhead is dominant. After collecting all necessary blocks, each worker node performs a product operation followed by an element-wise addition. In the step, I/O overhead to read the fetched blocks from a \textit{local.dir} location and compute overhead dominates.
 
-\subsection{Matrix Multiplication Overhead Modeling}
+\subsection{Distributed Matrix Multiplication Overhead Modeling}
+Dense matrix multiplication is widely known as a CPU intensive task, but other resource overheads become non-negligible when it is executed on a large-scale distributed computing environment, such as Spark. It is important to understand such overheads to accurately estimate the performance of arbitrary size and shape of matrix multiplication on a diverse cloud computing environment. To qualitatively explain the overhead, let us assume the number of rows of a left matrix as $N$, the number of columns of a left matrix (or the number of rows of a right matrix) as $K$, and the number of columns of a right matrix as $M$. Accordingly, the result matrix size is $N \times M$. Left, right, and result matricies are block-partitioned whose partition size is expressed in the lowercase letter ($n$, $k$, and $m$, where $N \geq n$, $M \geq m$, and $K \geq k$). 
+
+\textbf{Shuffle}:
+\textbf{Compute}
+
+\section{MPC : Matrix Multiplication Performance Prediction}
 
 \section{Evaluation}{\label{eval}}
 
