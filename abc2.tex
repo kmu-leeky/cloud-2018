@@ -111,6 +111,9 @@ The purpose of the modeling is estimating the execution latency when processing 
 
 Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest.~\cite{Breiman2001}  Each tree is constructed with random subset of the training data. This lets each tree focus on a different chosen input variables which enhances the RF robustness to noisy data and screens the unimportant features. 
 
+To further improve the accuracy of prediction model, we leverage Bayesian Optimization, which is a framework to tune parameters of MI estimators.
+Bayesian optimization works by constructing a posterior distribution of functions that best illustrates the function you want to optimize.
+By using this, the resulting relative error is below 7\text{\%}.
 % Modeling - feature, Gradient Boosting, Bayesian Optimization
 
 
