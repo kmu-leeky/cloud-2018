@@ -107,6 +107,9 @@ The opreation step of MPC is shown in Figure~\ref{fig:mpc-architecture} that is 
 \subsection{Train Data Generation}
 \subsection{Feature Extraction}
 \subsection{Modeling}
+The purpose of the modeling is estimating the execution latency when processing matrix multiplication application. To reduce the uncertainty of a non-linear interaction model and consider the noisy data in the cloud environment, we utilize~\textit{random forests} for modeling. 
+
+Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest.~\cite{Breiman2001}  Each tree is constructed with random subset of the training data. This lets each tree focus on a different chosen input variables which enhances the RF robustness to noisy data and screens the unimportant features. 
 
 % Modeling - feature, Gradient Boosting, Bayesian Optimization
 
