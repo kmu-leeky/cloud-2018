@@ -110,16 +110,21 @@ In the train data generation step, MPC performs offline profiling of various typ
 To consider various cloud computing instances with distinct capacity, MPC adopts OpenBLAS to conduct computation on CPU and NVBLAS to conduct computation on instances that equip GPU devices. To allow Spark to interact with the hardware-optmized linear algebra libraries, we use netlib-java as proposed in~\cite{fatman-littleboy}.
 
 \subsection{Feature Extraction}
+As shown in Section~\ref{sec:overhead-modeling}, overheads of matrix multiplication in a distributed comptuing environments encompass various sources of resources. In order to account for such diverse overheads, MPC propose to utilize the dimension of input matrix blocks and the products, namely $n$, $m$, $k$, $n \times m$, $n \times k$, $k \times m$, and $n \times k \times m$, as features to model the performance. With $n \times m$ term, we can consider the size of output matrix, $n \times k$ and $k \times m$ terms represent the size of left and right matrix blocks size that impacts network and IO disk overhead. The $n \times k \times m$ term represents the total number of multiply operations.
+
+Different from MPC, previous works that focus on predicting the performance of data mining tasks on cloud computing resources used a scale-based sampling mechanism as an input feature for prediction~\cite{ernest, cherrypick, paris}. They generally apply sampling at the input dataset by selecting very small portion and measure performance using the subset of dataset. Using the outcomes from the sample dataset, different algorithms apply distinct preditive algorithms, such as non negative linear equation (Ernest~\cite{ernest}), bayesian optimization (Cherrypick~\cite{cherrypick}), and random forest (PARIS~\cite{paris}), to make prediction. However, the scale-based sampling mechanism cannot capture the complex nature of distributed matrix muliplication, and it considers either $n$ or $m$ based on the sampling method. In the evaluation section, we demonstrate the superior performance of MPC due to the rich set of features.
 
 \subsection{Modeling}
-The purpose of the modeling is estimating the execution latency when processing matrix multiplication application. To reduce the uncertainty of a non-linear interaction model and consider the noisy data in the cloud environment, we utilize~\textit{random forests} for modeling. 
+In the modeling step, MPC builds a model to represent the performance of multiplying various matricies. This step is composed of model build and hyper parameter search; MPC utilizes Gradient Boosting~\cite{gradient-boosting} regressor for model build step and Bayesian Optimization~\cite{bayesian-optimization} to find the optimal parameters to run GB method.
 
-Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest.~\cite{random-forest}  Each tree is constructed with random subset of the training data. This lets each tree focus on a different chosen input variables which enhances the RF robustness to noisy data and screens the unimportant features. 
+% Graidient boostring overview
+% Bayesian optimization overview
 
-To further improve the accuracy of prediction model, we leverage Bayesian Optimization, which is a framework to tune parameters of MI estimators.
-Bayesian optimization works by constructing a posterior distribution of functions that best illustrates the function you want to optimize.
-By using BO, the resulting relative error is below 7\text{\%} which is 2\text{\%} improvement regarding certainty of prediction model.
-% Modeling - feature, Gradient Boosting, Bayesian Optimization
+%The purpose of the modeling is estimating the execution latency when processing matrix multiplication application. To reduce the uncertainty of a non-linear interaction model and consider the noisy data in the cloud environment, we utilize~\textit{random forests} for modeling. 
+
+%Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest.~\cite{random-forest}  Each tree is constructed with random subset of the training data. This lets each tree focus on a different chosen input variables which enhances the RF robustness to noisy data and screens the unimportant features. 
+
+%To further improve the accuracy of prediction model, we leverage Bayesian Optimization, which is a framework to tune parameters of MI estimators. Bayesian optimization works by constructing a posterior distribution of functions that best illustrates the function you want to optimize. By using BO, the resulting relative error is below 7\text{\%} which is 2\text{\%} improvement regarding certainty of prediction model.
 
 \section{Evaluation}{\label{eval}}
 % dataset description
