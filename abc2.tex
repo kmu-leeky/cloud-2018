@@ -110,7 +110,16 @@ In the train data generation step, MPC performs offline profiling of various typ
 To consider various cloud computing instances with distinct capacity, MPC adopts OpenBLAS to conduct computation on CPU and NVBLAS to conduct computation on instances that equip GPU devices. To allow Spark to interact with the hardware-optmized linear algebra libraries, we use netlib-java as proposed in~\cite{fatman-littleboy}.
 
 \subsection{Feature Extraction}
+
 \subsection{Modeling}
+The purpose of the modeling is estimating the execution latency when processing matrix multiplication application. To reduce the uncertainty of a non-linear interaction model and consider the noisy data in the cloud environment, we utilize~\textit{random forests} for modeling. 
+
+Random forests are a combination of tree predictors such that each tree depends on the values of a random vector sampled independently and with the same distribution for all trees in the forest.~\cite{random-forest}  Each tree is constructed with random subset of the training data. This lets each tree focus on a different chosen input variables which enhances the RF robustness to noisy data and screens the unimportant features. 
+
+To further improve the accuracy of prediction model, we leverage Bayesian Optimization, which is a framework to tune parameters of MI estimators.
+Bayesian optimization works by constructing a posterior distribution of functions that best illustrates the function you want to optimize.
+By using BO, the resulting relative error is below 7\text{\%} which is 2\text{\%} improvement regarding certainty of prediction model.
+% Modeling - feature, Gradient Boosting, Bayesian Optimization
 
 \section{Evaluation}{\label{eval}}
 % dataset description
