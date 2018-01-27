@@ -100,7 +100,9 @@ In the element-wise addition step, the number of sum operation of each cell is p
 \section{MPC : Matrix Multiplication Performance Prediction}
 MPC aims to predict the latency to complete multiplication of dense matricies that might have different size and shape. As the matrix multiplication is a core kernel method for various machine learning algorithm for big-data analytics, we target to predict the performance on various cloud computing resources where many recent big-data systems are deployed.
 
-% add a figure to explain all the steps of MPC
+\begin{figure}
+  \centering\includegraphics[width=0.5\textwidth]{figures/mpc-architecture.pdf}\caption{Architecture of MPC to predict various matrix multiplication performance}\label{fig:mpc-architecture}
+\end{figure}
 
 The opreation step of MPC is shown in Figure~\ref{fig:mpc-architecture} that is composed of train dataset generation, feature extraction, and modeling. In the modeling step, we iteratively apply bayesian optimization~\cite{bayesian-optimization} to find the optimally working hyper parameters of the chosen algorithm.
 
