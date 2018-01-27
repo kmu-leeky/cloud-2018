@@ -105,14 +105,20 @@ MPC aims to predict the latency to complete multiplication of dense matricies th
 The opreation step of MPC is shown in Figure~\ref{fig:mpc-architecture} that is composed of train dataset generation, feature extraction, and modeling. In the modeling step, we iteratively apply bayesian optimization~\cite{bayesian-optimization} to find the optimally working hyper parameters of the chosen algorithm.
 
 \subsection{Train Data Generation}
+In the train data generation step, MPC performs offline profiling of various types and sizes of matrix multiplication to build a model to predict latency of arbitrary input dataset. A matrix multiplication task can be broadly grouped into square $\times$ square, long-thin $\times$ short-wide, and short-wide $\times$ long-thin matricies. To cover all the shapes and various sizes, MPC profiles the latency of synthetically generated left and right matricies. In the latency measurement, MPC utilizes Apach Spark WebUI REST API that provides various execution metricies in the JSON format.
+
+To consider various cloud computing instances with distinct capacity, MPC adopts OpenBLAS to conduct computation on CPU and NVBLAS to conduct computation on instances that equip GPU devices. To allow Spark to interact with the hardware-optmized linear algebra libraries, we use netlib-java as proposed in~\cite{fatman-littleboy}.
+
 \subsection{Feature Extraction}
 \subsection{Modeling}
 
-% Modeling - feature, Gradient Boosting, Bayesian Optimization
-
-
-
 \section{Evaluation}{\label{eval}}
+% dataset description
+% model comparision
+% effect of bayesian optimization
+% feature importance
+% Predicton with other cloud instance types
+% compare to Ernest
 
 \section{Related Work}\label{sec:relatedwork}
 \textbf{Instance Recommendation:} Ernest~\cite{ernest} predicts performance for different VM and cluster sizes, targeting machine learning analytics applications. PARIS~\cite{Yadwadkar:2017:SBV:3127479.3131614} takes a hybrid online/offline approach, using a random forest model to predict application performance on various VM configurations based on features such as CPU utilization obtained from profiling. None of these systems consider the I/O overhead modeling in distributed cloud environments with arbitrary matrix shape which can affect matrix computation performance. 
