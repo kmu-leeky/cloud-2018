@@ -148,7 +148,8 @@ To make diverse matrix multiplication scenarios for training and evaluation, we 
   \centering\includegraphics[width=0.45\textwidth]{figures/feature-importance.pdf}\caption{The relative importance of features and the impact to the model accuracy. The number of multiply operations, output matrix size, and  the shuffle overhead are the three most important features.}\label{fig:feature-importance}
 \end{figure}
 
-\textbf{effectiveness of bayesian optimization}
+\textbf{effectiveness of bayesian optimization}: MPC uses bayesian optimization to find the optimal hyper parameters to build a model. To quantitatively analyze influence from the optimization step, we show three hyper parameters and the $R^2$ value in Table~\ref{table:bo-performance}. In the experiment, we use \textit{BayesianOptimization} library from \textit{bayes\_opt} package in Python. During optimization, we split the input dataset as a train and test set with the 10-fold cross validation method, and 40 iterations with different hyper parameters are evaluated. Comparing to default parameters of \textit{GradientBoostingRegressor}, the optimization step changes the parameters in the direction of increasing accuracy, i.e., more number of regression trees (n\_estimators), while controlling overfitting, i.e., avoid modeling a case specific to a particular sample (min\_samples\_split). In the final row, we can see the accuracy of the model measured as a coefficient of determination increases slightly from $0.9578$ to $0.9681$.
+
 \begin{table}
   \centering
   \begin{tabular}{|C{2.2cm}|C{1.5cm}|C{1.5cm}|}
