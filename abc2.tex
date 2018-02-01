@@ -52,7 +52,7 @@ To understand the characteristics of matrix multiplication performance on a dist
 
 Figure~\ref{fig:different-instance-types} shows the normalized latency to the fastest completing instance type in the gray bar. As shown in the figure, as the input matrix size differs, the best performing instance type also differs - no globally optimal instance type. If we consider the price factor of each instance, the performance difference even gets bigger as shown in the red star mark. Furthermore, as shown in the Figure~\ref{fig:instance-blocks-sizes-compare}, multiplying two non-sqaure matricies shows siginificantly different performance comparing to the square matrix multiplication though the number of compute operation is the same - i.e., the number of (left matrix rows $\times$ left matrix columns $\times$ right matrix columns).
 
-\begin{figure}[!ht]
+\begin{figure}[t]
   \centering
   \subfloat[Performance of different instance types of 2xlarge]{\label{fig:different-instance-types}\includegraphics[width=4.5cm,height=4.5cm]{figures/instance-2xl-compare.pdf}}\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\subfloat[Performance of different matrix shapes]{\label{fig:different-matrix-shapes}\includegraphics[width=4cm, height=4.5cm]{figures/matrix-multiplication-different-shape.pdf}}
   \caption{\label{fig:instance-blocks-sizes-compare}. The normalized value of latency with respect to different instance types and input matrix shapes - the lower, the better.}
@@ -148,8 +148,36 @@ To make diverse matrix multiplication scenarios for training and evaluation, we 
   \centering\includegraphics[width=0.45\textwidth]{figures/feature-importance.pdf}\caption{The relative importance of features and the impact to the model accuracy. The number of multiply operations, output matrix size, and  the shuffle overhead are the three most important features.}\label{fig:feature-importance}
 \end{figure}
 
-% model comparison
-% bayesian optimization
+\textbf{effectiveness of bayesian optimization}
+\begin{table}
+  \centering
+  \begin{tabular}{|C{2.2cm}|C{1.5cm}|C{1.5cm}|}
+  \hline
+  &default&bayesian optimization\\
+  \hline
+  n\_estimators&100&235\\
+  \hline
+  min\_samples\_split&2&16\\
+  \hline
+  max\_features&8&6\\
+  \hline
+  performance ($R^2$)&0.9578&0.9681\\
+  \hline
+  \end{tabular}
+  \caption{\label{table:bo-performance}Paramters suggested by optimization module and the improved performance}
+\end{table}
+
+
+\textbf{prediction algorithm comparison}
+\begin{figure}[t]
+  \centering
+  \subfloat[algorithms performance comparison]{\label{fig:r2-comparison}\includegraphics[width=0.4\textwidth]{figures/compare-algorithms.pdf}}\\ 
+  \subfloat[GBM]{\label{fig:gbm-measured-predicted}\includegraphics[width=0.23\textwidth]{figures/gbm-measured-predicted.pdf}} \hfil \subfloat[NNLS]{\label{fig:nnls-measured-predicted}\includegraphics[width=0.23\textwidth]{figures/nnls-measured-predicted.pdf}}
+  \caption{\label{fig:algorithm-comparison}. Performance comparison}
+\end{figure}
+
+
+
 % prediction on cloud computing instances
 % two figures - using GB, R^2 is consistent for C4, R4, G2
 % - three representative matricies, the latency becomes different, we can also mention the price
