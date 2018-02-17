@@ -163,6 +163,13 @@ To make diverse matrix multiplication scenarios for training and evaluation, we 
 \subsubsection{prediction algorithm comparison}
 To predict the execution time of matrix multiplication of arbitrary sizes and shapes, various machine learning algorithms can be applied with features that are proposed in this paper. Among the algorithms, we compare decision tree regression variant algorithms and a linear regrssion variant method. For the decision tree variants, we compare gradient boosting regressor that is introduced in Section~\ref{sec:modeling} and random forest~\cite{random-forest}. Different from gradient boosting, random forest regressor builds multiple regressor trees by randomly selecting features and samples. Both gradient boosting and random forest regressors represent the non-linear character of input data while preventing over-fitting by combining outcomes from many weak learners. As a linear regression variant method, we adopt non-negative least squares (NNLS) regressor. In predicting latency, the non-negativity constraint should be imposed to avoid the latency being less than zero, and NNLS finds the optimal linear model that minimizes the prediction error.
 
+\begin{figure}[t]
+	\centering
+	\subfloat[performance w.r.t instances ]{\label{fig:gbm-r2-score}\includegraphics[width=0.4\textwidth]{figures/compare-instances-gbm-r2.pdf}}\\ 
+	\subfloat[Measured/Predicted]{\label{fig:gbm-measured-predicted-ticks}\includegraphics[width=0.5\textwidth]{figures/GBM-measured-predicted-ticks.pdf}} \hfil 
+	\caption{\label{fig:gbm-comparison}. GBM performance}
+\end{figure}
+
 Figure~\ref{fig:r2-comparison} shows the prediction accuracy of three different algorithms. For each algorithm, we use the train dataset and features that are presented in Section~\ref{sec:mpc-structure}. 10-fold cross validation is performed 100 times, and the average value is plotted with the minimum and maximum value in the error bars. The gradient boosting regressor shows the best accuracy with the $R^2$ value of $0.968$, followed by random forest regressor and NNLS with the $R^2$ of $0.955$ and $0.869$, respectively. From the figure, we can see that the linear equation cannot capture the non-linear interactions among proposed features in this paper. Figure~\ref{fig:gbm-measured-predicted} (gradient boosting regressor) and \ref{fig:nnls-measured-predicted} (NNLS) show the measured latency and predicted latency in the x and y axis, respectively. The dotted line means the prediction with no error (slope of one), and scattered points close to the line are accurate predictions. From the figures, we can confirm that the gradient boosting regressor provides better accuracy in the latency prediction.
 
 \begin{figure}[t]
@@ -173,12 +180,19 @@ Figure~\ref{fig:r2-comparison} shows the prediction accuracy of three different 
 \end{figure}
 
 
+
 % prediction on cloud computing instances
 % two figures - using GB, R^2 is consistent for C4, R4, G2
 % - three representative matrices, the latency becomes different, we can also mention the price
 
 \subsection{Comparison with Ernest}
 % choose three cases with the largest size. run the test see the result.
+
+
+\begin{figure}[t]
+	\centering\includegraphics[width=0.4\textwidth]{figures/MPC-Ernest-compare.pdf}\caption{Comparsion with MPC}\label{fig:mpc-ernest}
+\end{figure}
+
 \section{Related Work}\label{sec:relatedwork}
 \textbf{Big-data workload performance estimation on cloud}: In a cloud computing environment, there are a large number of instance types that have unique hardware configurations, and few works propose a method to build an optimal environment to run big-data analytics workloads. Ernest~\cite{ernest} proposes a method to predict performance of running arbitrary data mining algorithms with different number of resources on cloud. The proposed algorithm is composed of two parts, an experiment design step to select candidates of input data set to perform profiling and a prediction step to calculate the expected latency with a different number of resources. PARIS~\cite{paris} takes a hybrid online/offline approach, using a random forest model to predict application performance on various VM configurations based on features such as CPU utilization obtained from profiling. Cherrypick~\cite{cherrypick} proposes to use bayesian optimization to select instance type candidates to perform off-line profiling to predict performance on various cloud instance types. The works rely on a sampling method for a given input dataset, and the profiled result is not reusable for other input datasets. Furthermore, they focus on predicting high-level machine learning algorithm execution latency and cannot capture the complex nature of a distributed matrix multiplication task. Thus, the prediction accuracy drops as they are applied to an algorithm whose kernel is distributed matrix multiplication.
 
