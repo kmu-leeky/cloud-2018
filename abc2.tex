@@ -72,6 +72,10 @@ In summary, main research contributions of this paper are as follows.
   \item{Uncovering non-linearity among features and modeling with an appropriate method}
 \end{itemize}
 
+\begin{figure}[ht]
+	\centering\includegraphics[width=0.45\textwidth]{figures/matmult-overhead-non-square-1.pdf}\caption{Block-based distributed matrix multiplication and its overhead in each step. Network, I/O, and CPU are principal resources for the execution.}\label{fig:matmul-with-overhead}
+\end{figure}
+
 \section{Matrix Multiplication on a Distributed Computing Environment}\label{sec:distributed-matrix-computation}
 Optimization of distributed matrix multiplication is well studied in the literature. In the HPC community, many works focused on minimizing communication cost using the MPI model. Representative works include SUMMA~\cite{summa} and CARMA~\cite{carma}. Despite of the performance optimality of the methods, they have limitations regarding the programmability, scalability, and robustness comparing to general purpose big data analysis systems, such as Spark~\cite{spark} and Hadoop~\cite{hadoop}, especially on a shared cloud computing environment.
 
@@ -79,9 +83,6 @@ Apache Spark is an open source big data analysis platform. The primary abstracti
 
 In Spark, matrix-related linear algebraic operations are supported in the MLlib library~\cite{spark-mm} with various matrix partitioning schemes (row-, column-, and block-based) and a set of distributed operation APIs on the matrix. To multiply two matrices, Spark MLlib automatically identifies the optimal way of task distribution based on the input matrix partitioning scheme and uses Scala Breeze library to execute multiplication. Let us give an example of multiplying two matrices, $C = A \times B$. If $A$ is row-partitioned and $B$ is column-partitioned, the Cartesian product is performed for each row block of $A$ and column block of $B$. If both $A$ and $B$ are block-partitioned, the block dimension of result matrix, $C$, is decided by considering the number of workers and input block dimensions. A work node that is responsible for each resulting block fetches all the necessary blocks from $A$ and $B$ to execute multiply operation locally.
 
-\begin{figure}
-  \centering\includegraphics[width=0.45\textwidth]{figures/matmult-overhead-non-square-1.pdf}\caption{Block-based distributed matrix multiplication and its overhead in each step. Network, I/O, and CPU are principal resources for the execution.}\label{fig:matmul-with-overhead}
-\end{figure}
 
 Figure~\ref{fig:matmul-with-overhead} shows an example of block-based matrix multiplication. A left matrix, $A$, is block-partitioned by $2 \times 3$, a right matrix, $B$, is partitioned by $3 \times 2$, and the result matrix, $C$, is partitioned by $2 \times 2$. In Spark, a \textit{cogroup} operation by the result matrix block index allows a worker node that is responsible for a result block to collect necessary left and right matrix blocks. During \textit{cogroup} operation, network overhead is dominant. After collecting all necessary blocks, each worker node performs product operations followed by element-wise additions. In the step, I/O overhead to read the fetched blocks from a \textit{local.dir} location and compute overhead dominate.
 
