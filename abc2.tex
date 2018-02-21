@@ -147,7 +147,7 @@ To make diverse matrix multiplication scenarios for evaluation, we generate left
   \centering\includegraphics[width=0.45\textwidth]{figures/feature-importance.pdf}\caption{The relative importance of features and the impact to the model accuracy. The number of multiply operations, output matrix size, and  the shuffle overhead are the three most important features.}\label{fig:feature-importance}
 \end{figure}
 
-\subsubsection{effectiveness of bayesian optimization} MPEC uses bayesian optimization to find the optimal hyper parameters to build a model. To quantitatively analyze influence from the optimization step, we show three hyper parameters and the $R^2$ value in Table~\ref{table:bo-performance}. In the experiment, we use \textit{BayesianOptimization} library from \textit{bayes\_opt} package in Python. During optimization, we use 10-fold cross validation to generate train and test dataset and search for hyper parameters to maximize $R^2$ with 30 iterations. Comparing to default parameters of \textit{GradientBoostingRegressor}, the optimization step changes model parameters in the direction of increasing accuracy, i.e., more number of regression trees (n\_estimators), while controlling overfitting, i.e., avoid representing a case that is specific to a particular sample (min\_samples\_split). In the final row, we can see the accuracy of the model measured by the coefficient of determination increases slightly from $0.9578$ to $0.9681$.
+\subsubsection{effectiveness of bayesian optimization} MPEC uses bayesian optimization to find the optimal hyper parameters to build a model. To quantitatively analyze influence from the optimization step, we show three hyper parameters and the $R^2$ value in Table~\ref{table:bo-performance}. In the experiment, we use \textit{BayesianOptimization} library from \textit{bayes\_opt} package in Python. During optimization, we use 10-fold cross validation to generate train and test dataset and search for hyper parameters to maximize $R^2$ with 30 iterations. Comparing to default parameters of \textit{GradientBoostingRegressor}, the optimization step changes model parameters in the direction of increasing accuracy, i.e., more number of regression trees (n\_estimators), while controlling overfitting, i.e., avoid representing a case that is specific to a particular sample (min\_samples\_split). In the final row, we can see the accuracy of the model measured by the coefficient of determination increases slightly from $0.9586$ to $0.9689$.
 
 \begin{table}
   \centering
@@ -155,13 +155,13 @@ To make diverse matrix multiplication scenarios for evaluation, we generate left
   \hline
   &default&bayesian optimization\\
   \hline
-  n\_estimators&100&235\\
+  n\_estimators&100&114\\
   \hline
-  min\_samples\_split&2&16\\
+  min\_samples\_split&2&14\\
   \hline
   max\_features&8&6\\
   \hline
-  performance ($R^2$)&0.9578&0.9681\\
+  performance ($R^2$)&0.9586&0.9689\\
   \hline
   \end{tabular}
   \caption{\label{table:bo-performance}Parameters suggested by optimization module and the improved performance}
