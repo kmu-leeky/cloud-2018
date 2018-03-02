@@ -21,8 +21,8 @@
 \begin{document}
 \bstctlcite{IEEEexample:BSTcontrol}
 
-\title{MPEC : Distributed Matrix Multiplication Performance Estimator \\for Machine Learning Jobs on Cloud Computing}
-
+\title{MPEC : Distributed Matrix Multiplication Performance Estimator \\for Machine Learning Jobs in Cloud Computing}
+%  Remark: Please note that most journals do not allow the use of abbreviations in titles. Please check the target journal guidelines to verify the same and revise accordingly.
 
 \author{\IEEEauthorblockN{Myungjun Son}
 \IEEEauthorblockA{Department of Computer Science\\
@@ -41,7 +41,7 @@ leeky@kookmin.ac.kr}
 \maketitle
 
 \begin{abstract}
-  Matrix multiplication is an important kernel task in many machine learning algorithms. As the size of input dataset increases, many workloads are analyzed on a large-scale distributed cloud computing environment, and understanding characters of a distributed matrix multiplication task is crucial to run machine learning jobs on cloud. In this paper we propose \textbf{MPEC}, Matrix Multiplication Performance Estimator on Cloud Computing, that predicts the latency of various sizes and shapes of matrix multiplication on a distributed cloud computing environment. We first characterize overheads of a distributed matrix multiplication task and propose features to model the latency of a task with different input types. Using the proposed features, a latency prediction model is built by applying a data mining algorithm and parameter optimization step iteratively. With thorough experiments of 236 cases of distinct types of matrix multiplications on diverse cloud instance types with Apache Spark, we confirm that the proposed method is effective in modeling the latency of various types of matrix multiplication tasks while capturing non-linear interactions among the proposed features. Comparison with the state-of-the-art cloud computing performance predictor presents that MPEC provides 16\% more accuracy for a task of distributed matrix multiplication and confirms the uniqueness of the distributed matrix multiplication workload.
+  Matrix multiplication is an important kernel task in many machine learning algorithms. As the size of input datasets increase, multiple workloads are analyzed in large-scale distributed cloud computing environments. Furthermore, understanding the characteristics of a distributed matrix multiplication task is essential for running machine learning jobs in the cloud. Herein, we propose matrix multiplication performance estimator for cloud computing (MPEC), a method to predict the latency of matrix multiplication of various sizes and shapes in a distributed cloud computing environment. We first characterize the overhead of a distributed matrix multiplication task and propose features to model the latency of a task with different input types. Using the proposed features, a latency prediction model is developed by applying a data mining algorithm and a parameter optimization step iteratively. In experiments with 236 distinct types of matrix multiplications on diverse cloud instances running Apache Spark, we confirm that the proposed method can model the latency of various types of matrix multiplication tasks effectively and capture the non-linear interactions among the proposed features. A comparison with the state-of-the-art cloud computing performance predictor reveals that MPEC provides 16\% greater accuracy for a distributed matrix multiplication task and confirms the uniqueness of the distributed matrix multiplication workload.
 \end{abstract}
 
 \IEEEpeerreviewmaketitle
@@ -56,7 +56,7 @@ To understand characters of matrix multiplication performance on a distributed c
 \begin{figure}[t]
   \centering
   \subfloat[Different instance types]{\label{fig:different-instance-types}\includegraphics[width=4.5cm,height=4.5cm]{figures/instance-2xl-compare.pdf}}\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\hfil\subfloat[Different matrix shapes]{\label{fig:different-matrix-shapes}\includegraphics[width=4cm, height=4.5cm]{figures/matrix-multiplication-different-shape.pdf}}
-  \caption{\label{fig:instance-blocks-sizes-compare}The normalized value of latency with different instance types and input matrix shapes - the lower, the better.}
+  \caption{\label{fig:instance-blocks-sizes-compare}Normalized value of latency with different instance types and input matrix shapes (lower values are better)}
 \end{figure}
 
 Figure~\ref{fig:different-instance-types} shows the normalized latency to the fastest completing instance type in the gray bar. As shown in the figure, as the input matrix size differs, the best performing instance type differs. If we consider the price of each instance, the performance difference even gets bigger as shown in the red star mark. Furthermore, as shown in the Figure~\ref{fig:instance-blocks-sizes-compare}, multiplying two non-square matrices shows significantly different performance comparing to the square matrix multiplication though the number of multiply operation is the same - i.e., the number of left matrix rows $\times$ left matrix columns $\times$ right matrix columns. From the result in Figure~\ref{fig:instance-blocks-sizes-compare}, we can conclude that estimating latency of distributed matrix multiplication tasks with different matrix sizes and shapes is challenging.
