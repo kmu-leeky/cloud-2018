@@ -1,8 +1,8 @@
-abc2.aux
-abc2.bbl
-abc2.blg
-abc2.log
-abc2.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.pdf
 abc2.synctex.gz
 *.swp
 ~*
