@@ -9,8 +9,13 @@
 \usepackage{multicol}
 \usepackage{array}
 \usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\newcommand\feedback[1]{\textcolor{red}{#1}}
 \newcommand{\BIBdecl}{\setlength{\itemsep}{0.0 em}}
 
+% usage of todonotes -> \todo{Test}
+% usage of feedback -> \feedback{test} 
 
 \newcommand{\nltable}[2][c]{%
   \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
